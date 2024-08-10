@@ -9,11 +9,12 @@ export default function TransactionList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('');
 
+  // fetching data
   useEffect(() => {
     axios
       .get(`http://localhost:4000/transaction/page/${currentPage}`)
       .then((response) => {
-        // setTransactions(response.data.result);
+
         let fetchedTransactions = response.data.result;
 
         if (filter === 'year') {
@@ -28,24 +29,10 @@ export default function TransactionList() {
         setTransactions(fetchedTransactions);
       })
       .catch((error) => {
-        console.error('Not logged in');
+        console.error('Error fetching transactions:', error);
         window.location.href = '/login';
       });
   }, [currentPage], [filter]);
-
-  //function to create dummy transcation
-  const createTransaction = async () => {
-    try {
-      await axios.post('http://localhost:4000/transaction', {
-        title: 'tes2t',
-        amount: -22,
-        description: 'beer',
-      });
-      setCurrentPage(1);
-    } catch (error) {
-      console.error('Error creating transaction:', error);
-    }
-  };
 
   //function to filter transactions
   const filterYear = () => {
